@@ -20,15 +20,19 @@ function createProducts(products) {
         // let productLink = CreateElementProductLink();
         products_section.appendChild(productLink);
 
-        // Création de l'article
-        let productArticle = document.createElement('article');
-        // let productArticle = CreateElementArticle();
-        productLink.appendChild(productArticle);
+       let productArticle = productLink.appendChild(createElementArticle());
 
         productArticle.appendChild(createElementImg(product));
         productArticle.appendChild(createElementH3(product));
         productArticle.appendChild(createElementP(product));
     }
+}
+
+//Création de l'élément article
+function createElementArticle() {
+    let productArticle = document.createElement('article')
+
+    return productArticle;
 }
 
 //Création de l'élément h3
