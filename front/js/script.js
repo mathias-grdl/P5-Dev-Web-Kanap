@@ -1,7 +1,6 @@
 // https://openclassrooms.com/fr/courses/5543061-ecrivez-du-javascript-pour-le-web/5577591-recuperez-des-donnees-dun-service-web
 // https://www.youtube.com/watch?v=b0dPBK37-M8&t=790s
 
-// Contact l'url et on récupère une promesse réponse (.then) -> response.json formate la réponse et nous fait une nouvelle promesse. Et on refait un .then pour récupérer le résultat.
 fetch("http://localhost:3000/api/products")
     .then(response => response.json())
     .then(products => {
@@ -9,18 +8,13 @@ fetch("http://localhost:3000/api/products")
     })
 
 function createProducts(products) {
-
-    // products_section = la section où mettre les produits
     const products_section = document.getElementById("items");
 
-    // boucle pour chaque indice (0,1...) que j'ai nommé 'Product' dans products (la data)
     for (let product of products) {
-        let productLink = document.createElement('a');
-        productLink.setAttribute("href", `./product.html?id=${product._id}`);
-        // let productLink = CreateElementProductLink();
-        products_section.appendChild(productLink);
 
-       let productArticle = productLink.appendChild(createElementArticle());
+        let productLink = products_section.appendChild(CreateElementProductLink(product));
+
+        let productArticle = productLink.appendChild(createElementArticle());
 
         productArticle.appendChild(createElementImg(product));
         productArticle.appendChild(createElementH3(product));
@@ -28,11 +22,19 @@ function createProducts(products) {
     }
 }
 
+//Création de l'élément lien du produit
+function CreateElementProductLink(product) {
+    let productElement = document.createElement('a');
+    productElement.setAttribute("href", `./product.html?id=${product._id}`);
+
+    return productElement;
+}
+
 //Création de l'élément article
 function createElementArticle() {
-    let productArticle = document.createElement('article')
+    let productElement = document.createElement('article')
 
-    return productArticle;
+    return productElement;
 }
 
 //Création de l'élément h3
