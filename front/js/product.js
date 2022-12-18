@@ -2,7 +2,6 @@
 const url_current = window.location.search;
 const url_parameters = new URLSearchParams(url_current);
 const product_id = url_parameters.get("id");
-
 // console.log(url_parameters);
 
 // Récupérer les données du produit grâce à son id
@@ -14,7 +13,7 @@ fetch(`http://localhost:3000/api/products/${product_id}`)
     })
 
 function createProducts(sofa) {
-    const { colors, _id, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const _id = sofa._id; || ...
+    const { colors, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const _id = sofa._id; || ...
 
     productImg(imageUrl, altTxt);
     productTitle(name);
@@ -23,6 +22,7 @@ function createProducts(sofa) {
     productColors(colors);
 }
 
+//Création de l'élément img
 function productImg(imageUrl, altTxt) {
     let productElement = document.createElement('img')
     productElement.setAttribute("src", imageUrl);
@@ -30,18 +30,22 @@ function productImg(imageUrl, altTxt) {
     document.querySelector(".item__img").appendChild(productElement);
 }
 
+// Affichage du nom du produit
 function productTitle(name) {
-    document.querySelector("#title").innerHTML = name;
+    document.getElementById("title").innerHTML = name;
 }
 
+// Affichage du prix du produit
 function productPrice(price) {
-    document.querySelector("#price").innerHTML = price;
+    document.getElementById("price").innerHTML = price;
 }
 
+// Affichage de la description du produit
 function productDescription(description) {
-    document.querySelector("#description").innerHTML = description;
+    document.getElementById("description").innerHTML = description;
 }
 
+//Création de l'élément option (couleurs)
 function productColors(colors) {
     colors.forEach((colors => {
         let option = document.createElement('option');
