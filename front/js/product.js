@@ -11,18 +11,16 @@ fetch(`http://localhost:3000/api/products/${product_id}`)
     .then(product => {
         createProducts(product);
         // console.log(products)
-        
     })
 
-function createProducts(sofa){
-    // const colors = sofa.colors;
-    // const _id = sofa._id;
-    // ...
-    const { colors, _id, name, price, imageUrl, description, altTxt } = sofa;
-    
+function createProducts(sofa) {
+    const { colors, _id, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const _id = sofa._id; || ...
+
     productImg(imageUrl, altTxt);
     productTitle(name);
     productPrice(price);
+    productDescription(description);
+    productColors(colors);
 }
 
 function productImg(imageUrl, altTxt) {
@@ -38,4 +36,17 @@ function productTitle(name) {
 
 function productPrice(price) {
     document.querySelector("#price").innerHTML = price;
+}
+
+function productDescription(description) {
+    document.querySelector("#description").innerHTML = description;
+}
+
+function productColors(colors) {
+    colors.forEach((colors => {
+        let option = document.createElement('option');
+        option.setAttribute('value', colors);
+        option.innerText = colors;
+        document.getElementById('colors').append(option);
+    }))
 }
