@@ -15,14 +15,27 @@ fetch(`http://localhost:3000/api/products/${product_id}`)
     })
 
 function createProducts(sofa){
-    const { altTxt, colors, description, imageUrl, name, price, _id } = sofa;
+    // const colors = sofa.colors;
+    // const _id = sofa._id;
+    // ...
+    const { colors, _id, name, price, imageUrl, description, altTxt } = sofa;
+    
     productImg(imageUrl, altTxt);
+    productTitle(name);
+    productPrice(price);
 }
 
 function productImg(imageUrl, altTxt) {
     let productElement = document.createElement('img')
     productElement.setAttribute("src", imageUrl);
     productElement.setAttribute("alt", altTxt);
-
     document.querySelector(".item__img").appendChild(productElement);
+}
+
+function productTitle(name) {
+    document.querySelector("#title").innerHTML = name;
+}
+
+function productPrice(price) {
+    document.querySelector("#price").innerHTML = price;
 }
