@@ -1,6 +1,6 @@
 // Récupérer l'id du produit
-const url_current = window.location.search;
-const url_parameters = new URLSearchParams(url_current);
+// https://flaviocopes.com/urlsearchparams/
+const url_parameters = new URLSearchParams(window.location.search);
 const product_id = url_parameters.get("id");
 // console.log(url_parameters);
 
@@ -8,12 +8,12 @@ const product_id = url_parameters.get("id");
 fetch(`http://localhost:3000/api/products/${product_id}`)
     .then(response => response.json())
     .then(product => {
-        createProducts(product);
+        createProduct(product);
         // console.log(products)
     })
 
-function createProducts(sofa) {
-    const { colors, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const _id = sofa._id; || ...
+function createProduct(sofa) {
+    const { colors, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const name = sofa.name; || ...
 
     productImg(imageUrl, altTxt);
     productTitle(name);
