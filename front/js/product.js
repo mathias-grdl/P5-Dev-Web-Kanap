@@ -16,10 +16,11 @@ function createProduct(sofa) {
     const { colors, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const name = sofa.name; || ...
 
     productImg(imageUrl, altTxt);
-    productTitle(name);
-    productPrice(price);
-    productDescription(description);
+    productElement("title", name);
+    productElement("price", price);
+    productElement("description", description);
     productColors(colors);
+
 }
 
 //Création de l'élément img
@@ -30,19 +31,9 @@ function productImg(imageUrl, altTxt) {
     document.querySelector(".item__img").appendChild(productElement);
 }
 
-// Affichage du nom du produit
-function productTitle(name) {
-    document.getElementById("title").innerHTML = name;
-}
-
-// Affichage du prix du produit
-function productPrice(price) {
-    document.getElementById("price").innerHTML = price;
-}
-
-// Affichage de la description du produit
-function productDescription(description) {
-    document.getElementById("description").innerHTML = description;
+// fonction générique
+function productElement(element, content) {
+    document.getElementById(element).innerHTML = content;
 }
 
 //Création de l'élément option (couleurs)

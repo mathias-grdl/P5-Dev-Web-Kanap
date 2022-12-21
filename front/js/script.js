@@ -7,13 +7,12 @@ fetch("http://localhost:3000/api/products")
         createProducts(products);
     })
 
+//Création des produits
 function createProducts(products) {
     const products_section = document.getElementById("items");
 
     for (let product of products) {
-
         let productLink = products_section.appendChild(CreateElementProductLink(product));
-
         let productArticle = productLink.appendChild(createElementArticle());
 
         productArticle.appendChild(createElementImg(product));
