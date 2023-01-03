@@ -20,7 +20,6 @@ function createProduct(sofa) {
     productElement("price", price);
     productElement("description", description);
     productColors(colors);
-
 }
 
 //Création de l'élément img
@@ -45,3 +44,29 @@ function productColors(colors) {
         document.getElementById('colors').append(option);
     }))
 }
+
+
+//Ajouter le produit
+const button_addToCart = document.getElementById("addToCart")
+button_addToCart.addEventListener("click", (c) => {
+// Ajouter la couleur
+const buttonProductColor = document.getElementById("colors").value
+// Ajouter la quantité
+const buttonProductQuantity = document.getElementById("quantity").value
+
+console.log(buttonProductColor);
+console.log(buttonProductQuantity);
+
+});
+
+//Gestion de la couleur ou quantité vide ?
+
+//Faire la distinction entre les couleurs
+
+//incrémenter ou non en fonction de la couleur et quantité du produit déjà présent dans le panier
+
+//Choisir la bonne quantité en fonction des couleurs
+
+//Calculer le prix 
+
+//Ajouter des produits au panier 
