@@ -48,16 +48,18 @@ function productColors(colors) {
 
 //Ajouter le produit
 const button_addToCart = document.getElementById("addToCart")
-button_addToCart.addEventListener("click", (c) => {
-// Ajouter la couleur
+button_addToCart.addEventListener("click", (addToCard) );
+
+
+
+function addToCard() {
 const buttonProductColor = document.getElementById("colors").value
-// Ajouter la quantité
-const buttonProductQuantity = document.getElementById("quantity").value
+const buttonProductQuantity = document.getElementById(typeof Number("quantity")).value //number
 
-console.log(buttonProductColor);
-console.log(buttonProductQuantity);
+// console.log(buttonProductColor);
+// console.log(buttonProductQuantity);
+}
 
-});
 
 //Gestion de la couleur ou quantité vide ?
 
@@ -67,6 +69,9 @@ console.log(buttonProductQuantity);
 
 //Choisir la bonne quantité en fonction des couleurs
 
-//Calculer le prix 
-
 //Ajouter des produits au panier 
+
+
+
+
+//Calculer le prix 
