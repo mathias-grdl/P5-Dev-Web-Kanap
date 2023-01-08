@@ -46,37 +46,48 @@ function productColors(colors) {
 }
 
 
+// =======================
+
 //Ajouter le produit
 const button_addToCart = document.getElementById("addToCart")
-button_addToCart.addEventListener("click", (addToCard) );
-
-
+button_addToCart.addEventListener("click", (addToCard));
 
 function addToCard() {
-const buttonProductColor = document.getElementById("colors").value
-const buttonProductQuantity = document.getElementById("quantity").value
-
-// console.log(buttonProductColor);
-// console.log(buttonProductQuantity);
-
-if (buttonProductColor == null || buttonProductColor == "" || buttonProductQuantity == null || buttonProductQuantity == ""){
-    alert ("Vous devez choisir une couleur ainsi qu'une quantité");
-}
-
-//localStorage
-const data = {
-    id : product_id,
-    color: buttonProductColor,
-    quantity: Number(buttonProductQuantity),
-    price: price, // LE PRIX N'EST PAS RECUPERE
-}
-localStorage.setItem(product_id, JSON.stringify(data))
-
+    clickButtonAddToCard()
 }
 
 
+function clickButtonAddToCard() {
+    const buttonProductColor = document.getElementById("colors").value
+    const buttonProductQuantity = document.getElementById("quantity").value
 
-//Gestion de la couleur ou quantité vide ?
+    if (buttonProductColor == null || buttonProductColor == "" || buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0") {
+        alert("Vous devez choisir une couleur ainsi qu'une quantité");
+     } 
+    else {
+        localStorageProducts(product_id, buttonProductColor, buttonProductQuantity)
+        redirectToCard()
+    }
+}
+
+// fonction localStorage
+function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity) {
+    const data = {
+        id: product_id,
+        // image : image,
+        color: buttonProductColor,
+        quantity: Number(buttonProductQuantity),
+        // price: price, // LE PRIX N'EST PAS RECUPERE
+    }
+    localStorage.setItem(product_id, JSON.stringify(data))
+}
+
+function redirectToCard() {
+    window.location.href = "cart.html"
+}
+
+
+
 
 //Faire la distinction entre les couleurs
 
@@ -84,9 +95,6 @@ localStorage.setItem(product_id, JSON.stringify(data))
 
 //Choisir la bonne quantité en fonction des couleurs
 
-//Ajouter des produits au panier 
-
-
-
+//Ajouter au panier 
 
 //Calculer le prix 
