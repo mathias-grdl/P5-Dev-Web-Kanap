@@ -54,11 +54,26 @@ button_addToCart.addEventListener("click", (addToCard) );
 
 function addToCard() {
 const buttonProductColor = document.getElementById("colors").value
-const buttonProductQuantity = document.getElementById(typeof Number("quantity")).value //number
+const buttonProductQuantity = document.getElementById("quantity").value
 
 // console.log(buttonProductColor);
 // console.log(buttonProductQuantity);
+
+if (buttonProductColor == null || buttonProductColor == "" || buttonProductQuantity == null || buttonProductQuantity == ""){
+    alert ("Vous devez choisir une couleur ainsi qu'une quantité");
 }
+
+//localStorage
+const data = {
+    id : product_id,
+    color: buttonProductColor,
+    quantity: Number(buttonProductQuantity),
+    price: price, // LE PRIX N'EST PAS RECUPERE
+}
+localStorage.setItem(product_id, JSON.stringify(data))
+
+}
+
 
 
 //Gestion de la couleur ou quantité vide ?
