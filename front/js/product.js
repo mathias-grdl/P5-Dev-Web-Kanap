@@ -53,17 +53,15 @@ const button_addToCart = document.getElementById("addToCart")
 button_addToCart.addEventListener("click", (addToCard));
 
 function addToCard() {
-    clickButtonAddToCard()
-}
-
-
-function clickButtonAddToCard() {
     const buttonProductColor = document.getElementById("colors").value
     const buttonProductQuantity = document.getElementById("quantity").value
+    VerificationOrder(buttonProductColor, buttonProductQuantity)
+}
 
+function VerificationOrder(buttonProductColor, buttonProductQuantity) {
     if (buttonProductColor == null || buttonProductColor == "" || buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0") {
         alert("Vous devez choisir une couleur ainsi qu'une quantité");
-     } 
+    }
     else {
         localStorageProducts(product_id, buttonProductColor, buttonProductQuantity)
         redirectToCard()
@@ -95,6 +93,6 @@ function redirectToCard() {
 
 //Choisir la bonne quantité en fonction des couleurs
 
-//Ajouter au panier 
+//Ajouter au panier
 
 //Calculer le prix 
