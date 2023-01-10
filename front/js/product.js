@@ -72,13 +72,13 @@ function VerificationOrder(buttonProductColor, buttonProductQuantity) {
         alert("Vous devez choisir une couleur ainsi qu'une quantité");
     }
     else {
-        localStorageProducts()
+        localStorageProducts(product_id, buttonProductColor, buttonProductQuantity)
         redirectToCard()
     }
 }
 
 
-function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity, productImgUrl, productImgAlt) {
+function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity) {
     const data = {
         id: product_id,
         imageUrl : productImgUrl, //comme le prix, pas ouf
@@ -89,8 +89,6 @@ function localStorageProducts(product_id, buttonProductColor, buttonProductQuant
     }
     localStorage.setItem(product_id, JSON.stringify(data))
 }
-
-
 
 function redirectToCard() {
     window.location.href = "cart.html"
