@@ -6,6 +6,8 @@ const product_id = url_parameters.get("id");
 
 let productPrice = 0; // NUL
 
+
+
 // Récupérer les données du produit grâce à son id
 fetch(`http://localhost:3000/api/products/${product_id}`)
     .then(response => response.json())
@@ -70,20 +72,20 @@ function VerificationOrder(buttonProductColor, buttonProductQuantity) {
         alert("Vous devez choisir une couleur ainsi qu'une quantité");
     }
     else {
-        localStorageProducts(product_id, buttonProductColor, buttonProductQuantity)
+        localStorageProducts()
         redirectToCard()
     }
 }
 
 
-function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity) {
+function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity, productImgUrl, productImgAlt) {
     const data = {
         id: product_id,
-        // imageUrl : image,
-
+        imageUrl : productImgUrl, //comme le prix, pas ouf
+        altTxt : productImgAlt,
         color: buttonProductColor,
         quantity: Number(buttonProductQuantity),
-        price: productPrice// LE PRIX N'EST PAS RECUPERE
+        price: productPrice// C'est mal fait ! Il ne faut pas oublier de multiplier avec la quantitée
     }
     localStorage.setItem(product_id, JSON.stringify(data))
 }
