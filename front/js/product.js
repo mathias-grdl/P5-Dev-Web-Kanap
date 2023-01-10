@@ -4,6 +4,8 @@ const url_parameters = new URLSearchParams(window.location.search);
 const product_id = url_parameters.get("id");
 // console.log(url_parameters);
 
+let productPrice = 0; // NUL
+
 // Récupérer les données du produit grâce à son id
 fetch(`http://localhost:3000/api/products/${product_id}`)
     .then(response => response.json())
@@ -20,6 +22,11 @@ function createProduct(sofa) {
     productElement("price", price);
     productElement("description", description);
     productColors(colors);
+
+    productPrice = price;
+    productImgUrl = imageUrl;
+    productImgAlt = altTxt;
+
 }
 
 //Création de l'élément img
@@ -68,17 +75,20 @@ function VerificationOrder(buttonProductColor, buttonProductQuantity) {
     }
 }
 
-// fonction localStorage
+
 function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity) {
     const data = {
         id: product_id,
-        // image : image,
+        // imageUrl : image,
+
         color: buttonProductColor,
         quantity: Number(buttonProductQuantity),
-        // price: price, // LE PRIX N'EST PAS RECUPERE
+        price: productPrice// LE PRIX N'EST PAS RECUPERE
     }
     localStorage.setItem(product_id, JSON.stringify(data))
 }
+
+
 
 function redirectToCard() {
     window.location.href = "cart.html"

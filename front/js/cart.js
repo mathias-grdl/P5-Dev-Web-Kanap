@@ -1,5 +1,6 @@
-const Cart = []
-// numberProductObject()
+// Récupération des produits du panier
+const Cart = [];
+
 
 
 // récupération des products dans le cart
@@ -15,3 +16,4 @@ function numberProductObject() {
     }
 }
 
+numberProductObject()
