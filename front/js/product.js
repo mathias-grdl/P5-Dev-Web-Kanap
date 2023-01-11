@@ -4,8 +4,6 @@ const url_parameters = new URLSearchParams(window.location.search);
 const product_id = url_parameters.get("id");
 // console.log(url_parameters);
 
-let productPrice = 0; // NUL
-
 
 
 // Récupérer les données du produit grâce à son id
@@ -19,16 +17,12 @@ fetch(`http://localhost:3000/api/products/${product_id}`)
 function createProduct(sofa) {
     const { colors, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const name = sofa.name; || ...
 
+    document.title = name;
     productImg(imageUrl, altTxt);
     productElement("title", name);
     productElement("price", price);
     productElement("description", description);
     productColors(colors);
-
-    productPrice = price;
-    productImgUrl = imageUrl;
-    productImgAlt = altTxt;
-
 }
 
 //Création de l'élément img
@@ -67,25 +61,36 @@ function addToCard() {
     VerificationOrder(buttonProductColor, buttonProductQuantity)
 }
 
+// function Message() {
+
+// }
+
 function VerificationOrder(buttonProductColor, buttonProductQuantity) {
-    if (buttonProductColor == null || buttonProductColor == "" || buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0") {
-        alert("Vous devez choisir une couleur ainsi qu'une quantité");
+    if ((buttonProductColor == null || buttonProductColor == "") && (buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0")) {
+        alert("Vous devez choisir une couleur et une quantité");
+    }
+    else if (buttonProductColor == null || buttonProductColor == ""){
+        alert("Vous devez choisir une couleur");
+    }
+
+    else if (buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0") {
+        alert("Vous devez choisir une quantité");
     }
     else {
         localStorageProducts(product_id, buttonProductColor, buttonProductQuantity)
-        redirectToCard()
+        // redirectToCard()
+        alert("Produit Ajouté");
     }
 }
+
 
 
 function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity) {
     const data = {
         id: product_id,
-        imageUrl : productImgUrl, //comme le prix, pas ouf
-        altTxt : productImgAlt,
         color: buttonProductColor,
         quantity: Number(buttonProductQuantity),
-        price: productPrice// C'est mal fait ! Il ne faut pas oublier de multiplier avec la quantitée
+        // price: productPrice// Ne pas mettre le prix dans le localstorage
     }
     localStorage.setItem(product_id, JSON.stringify(data))
 }
@@ -95,6 +100,7 @@ function redirectToCard() {
 }
 
 
+// récupérer via l'api l'img et le prix
 
 
 //Faire la distinction entre les couleurs
