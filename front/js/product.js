@@ -1,21 +1,14 @@
-// Récupérer l'id du produit
-// https://flaviocopes.com/urlsearchparams/
 const url_parameters = new URLSearchParams(window.location.search);
-const product_id = url_parameters.get("id");
-// console.log(url_parameters);
+const productId = url_parameters.get("id");
 
-
-
-// Récupérer les données du produit grâce à son id
-fetch(`http://localhost:3000/api/products/${product_id}`)
+fetch(`http://localhost:3000/api/products/${productId}`)
     .then(response => response.json())
     .then(product => {
-        createProduct(product);
-        // console.log(products)
+        displayProduct(product);
     })
 
-function createProduct(sofa) {
-    const { colors, name, price, imageUrl, description, altTxt } = sofa; // const colors = sofa.colors; || const name = sofa.name; || ...
+const displayProduct = (product) => {
+    const { colors, name, price, imageUrl, description, altTxt } = product; // const colors = sofa.colors; || const name = sofa.name; || ...
 
     document.title = name;
     productImg(imageUrl, altTxt);
@@ -23,6 +16,7 @@ function createProduct(sofa) {
     productElement("price", price);
     productElement("description", description);
     productColors(colors);
+    addToCard(product);
 }
 
 //Création de l'élément img
@@ -48,67 +42,66 @@ function productColors(colors) {
     }))
 }
 
-
-// =======================
-
-//Ajouter le produit
-const button_addToCart = document.getElementById("addToCart")
-button_addToCart.addEventListener("click", (addToCard));
-
-function addToCard() {
-    const buttonProductColor = document.getElementById("colors").value
-    const buttonProductQuantity = document.getElementById("quantity").value
-    VerificationOrder(buttonProductColor, buttonProductQuantity)
+//clique sur le bouton ajouter
+function addToCard(product) {
+    let button = document.getElementById("addToCart")
+    button.addEventListener("click", () => {
+        addCart(product)
+    })
 }
 
-// function Message() {
+// __________ PARTIE 2 __________ 
 
-// }
 
-function VerificationOrder(buttonProductColor, buttonProductQuantity) {
-    if ((buttonProductColor == null || buttonProductColor == "") && (buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0")) {
-        alert("Vous devez choisir une couleur et une quantité");
-    }
-    else if (buttonProductColor == null || buttonProductColor == ""){
-        alert("Vous devez choisir une couleur");
-    }
-
-    else if (buttonProductQuantity == null || buttonProductQuantity == "" || buttonProductQuantity == "0") {
-        alert("Vous devez choisir une quantité");
+const addCart = (product) => {
+    let productArray = JSON.parse(localStorage.getItem("product"));
+    let color = document.getElementById("colors").value
+    let quantity = document.getElementById("quantity").value
+    if (productArray === null) {
+        // si le product n'existe pas
+        productArray = [];
+        pushCart(productArray, product._id, color, quantity);
     }
     else {
-        localStorageProducts(product_id, buttonProductColor, buttonProductQuantity)
-        // redirectToCard()
-        alert("Produit Ajouté");
+        // s'il existe déjà
+        pushCart(productArray, product._id, color, quantity);
     }
 }
 
 
-
-function localStorageProducts(product_id, buttonProductColor, buttonProductQuantity) {
-    const data = {
-        id: product_id,
-        color: buttonProductColor,
-        quantity: Number(buttonProductQuantity),
-        // price: productPrice// Ne pas mettre le prix dans le localstorage
+const pushCart = (productArray, id, color, quantity) => {
+    
+// On vérifie que tout les champs soient remplient
+    if ((color == null || color == "") && (quantity == null || quantity == "" || quantity == "0")) {
+        alert("Vous devez choisir une couleur et une quantité");
     }
-    localStorage.setItem(product_id, JSON.stringify(data))
+    else if (color == null || color == "") {
+        alert("Vous devez choisir une couleur");
+    }
+    else if (quantity == null || quantity == "" || quantity == "0") {
+        alert("Vous devez choisir une quantité");
+    }
+// produit existe déjà
+    else if (productArray.some(products => products.id === id && products.color === color)) {
+        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+        productArray = productArray.map(product => {
+            if (product.id === id && product.color === color) {
+                product.quantity += +quantity;
+            }
+            return product;
+        });
+
+        // s'il n'existe pas
+    } else {
+        const addDataToArray = {
+            id: id,
+            color: color,
+            quantity: +quantity,
+        };
+        productArray.push(addDataToArray);
+    }
+    localStorage.setItem("product", JSON.stringify(productArray));
 }
 
-function redirectToCard() {
-    window.location.href = "cart.html"
-}
-
-
-// récupérer via l'api l'img et le prix
-
-
-//Faire la distinction entre les couleurs
-
-//incrémenter ou non en fonction de la couleur et quantité du produit déjà présent dans le panier
-
-//Choisir la bonne quantité en fonction des couleurs
-
-//Ajouter au panier
-
-//Calculer le prix 
+//FAIRE LE MESSAGE DERREUR PAR RAPPORT AU 100MAX 
+//NE PAS FAIRE APPARAÎTRE LES ERREURS EN ALERTE
