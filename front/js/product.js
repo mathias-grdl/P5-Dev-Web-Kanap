@@ -82,13 +82,15 @@ const pushCart = (productArray, id, color, quantity) => {
         alert("Vous devez choisir une quantité");
     }
 // produit existe déjà
-    else if (productArray.some(products => products.id === id && products.color === color)) {
+// https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    else if (productArray.some(products => products.id === id && products.color === color )) {
         // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/map
-        productArray = productArray.map(product => {
-            if (product.id === id && product.color === color) {
-                product.quantity += +quantity;
+        productArray = productArray.map(products => {
+            // la condition pour la quantity ne va pas 
+            if (products.id === id && products.color === color && products.quantity < 100 ) {
+                products.quantity += +quantity;
             }
-            return product;
+            return products;
         });
 
         // s'il n'existe pas
