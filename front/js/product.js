@@ -54,12 +54,15 @@ function addToCard(product) {
 
 
 const addCart = (product) => {
+    // https://www.youtube.com/watch?v=h34Dbdl9twc&ab_channel=DevTheory
+    // https://www.youtube.com/watch?v=KHIknKfaf2Q&ab_channel=LeDesignerduWeb-%C3%89coleduWeb
     let productArray = JSON.parse(localStorage.getItem("product"));
-    let color = document.getElementById("colors").value
-    let quantity = document.getElementById("quantity").value
+    let color = document.getElementById("colors").value;
+    let quantity = document.getElementById("quantity").value;
     if (productArray === null) {
         // si le product n'existe pas
         productArray = [];
+        // https://www.youtube.com/watch?v=wgFHZps8NQ4&ab_channel=JavascriptAcademy
         pushCart(productArray, product._id, color, quantity);
     }
     else {
@@ -70,24 +73,29 @@ const addCart = (product) => {
 
 
 const pushCart = (productArray, id, color, quantity) => {
-    
+    let error = document.createElement('p');
 // On vérifie que tout les champs soient remplient
     if ((color == null || color == "") && (quantity == null || quantity == "" || quantity == "0")) {
-        alert("Vous devez choisir une couleur et une quantité");
+        error.innerHTML = 'Vous devez choisir une couleur et une quantité';
+        document.querySelector(".item__content").appendChild(error);
     }
     else if (color == null || color == "") {
-        alert("Vous devez choisir une couleur");
+        error.innerHTML = 'Vous devez choisir une couleur';
+        document.querySelector(".item__content").appendChild(error);
     }
     else if (quantity == null || quantity == "" || quantity == "0") {
-        alert("Vous devez choisir une quantité");
+        error.innerHTML = 'Vous devez choisir une quantité';
+        document.querySelector(".item__content").appendChild(error);
     }
 // produit existe déjà
 // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+// https://www.youtube.com/watch?v=4sgugU_QV54&ab_channel=FloDev-Tutorielsd%C3%A9veloppementweb
     else if (productArray.some(products => products.id === id && products.color === color )) {
         // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/map
         productArray = productArray.map(products => {
             // la condition pour la quantity ne va pas 
             if (products.id === id && products.color === color && products.quantity < 100 ) {
+                // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Addition_assignment
                 products.quantity += +quantity;
             }
             return products;
@@ -102,8 +110,9 @@ const pushCart = (productArray, id, color, quantity) => {
         };
         productArray.push(addDataToArray);
     }
+        // https://developer.mozilla.org/fr/docs/Web/API/Storage/setItem
+        // https://www.youtube.com/watch?v=AUOzvFzdIk4&ab_channel=dcode
     localStorage.setItem("product", JSON.stringify(productArray));
 }
 
 //FAIRE LE MESSAGE DERREUR PAR RAPPORT AU 100MAX 
-//NE PAS FAIRE APPARAÎTRE LES ERREURS EN ALERTE
