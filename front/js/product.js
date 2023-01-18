@@ -16,7 +16,7 @@ const displayProduct = (product) => {
     productElement("price", price);
     productElement("description", description);
     productColors(colors);
-    addToCard(product);
+    addCartButtonListener(product);
 }
 
 //Création de l'élément img
@@ -43,10 +43,10 @@ function productColors(colors) {
 }
 
 //clique sur le bouton ajouter
-function addToCard(product) {
-    let button = document.getElementById("addToCart")
+function addCartButtonListener(product) {
+    let button = document.getElementById("addToCart");
     button.addEventListener("click", () => {
-        addCart(product)
+        addCart(product);
     })
 }
 
@@ -59,44 +59,43 @@ const addCart = (product) => {
     let productArray = JSON.parse(localStorage.getItem("product"));
     let color = document.getElementById("colors").value;
     let quantity = document.getElementById("quantity").value;
-    if (productArray === null) {
-        // si le product n'existe pas
-        productArray = [];
-        // https://www.youtube.com/watch?v=wgFHZps8NQ4&ab_channel=JavascriptAcademy
-        pushCart(productArray, product._id, color, quantity);
-    }
-    else {
-        // s'il existe déjà
-        pushCart(productArray, product._id, color, quantity);
-    }
+    //opérateur ternaire
+    productArray = productArray === null ? [] : productArray;
+    pushCart(productArray, product._id, color, quantity);
 }
 
 
 const pushCart = (productArray, id, color, quantity) => {
-    let error = document.createElement('p');
-// On vérifie que tout les champs soient remplient
-    if ((color == null || color == "") && (quantity == null || quantity == "" || quantity == "0")) {
-        error.innerHTML = 'Vous devez choisir une couleur et une quantité';
-        document.querySelector(".item__content").appendChild(error);
-    }
-    else if (color == null || color == "") {
-        error.innerHTML = 'Vous devez choisir une couleur';
-        document.querySelector(".item__content").appendChild(error);
-    }
-    else if (quantity == null || quantity == "" || quantity == "0") {
-        error.innerHTML = 'Vous devez choisir une quantité';
-        document.querySelector(".item__content").appendChild(error);
-    }
-// produit existe déjà
-// https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/some
-// https://www.youtube.com/watch?v=4sgugU_QV54&ab_channel=FloDev-Tutorielsd%C3%A9veloppementweb
-    else if (productArray.some(products => products.id === id && products.color === color )) {
+    let styleColor = "red";
+    let message = "";
+    quantity = parseInt(quantity);
+
+    // On vérifie que tout les champs soient remplient
+    if ((color === null || color === "") && (quantity === null || quantity === "" || quantity === 0)) {
+        message = 'Vous devez choisir une couleur et une quantité';
+    } else if (color === null || color === "") {
+        message = 'Vous devez choisir une couleur';
+    } else if (quantity === null || quantity === "" || quantity === 0) {
+        message = 'Vous devez choisir une quantité';
+    } else if (quantity > 100) {
+        message = 'Vous ne pouvez pas mettre plus de 100 produits';
+
+    // produit existe déjà
+    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    // https://www.youtube.com/watch?v=4sgugU_QV54&ab_channel=FloDev-Tutorielsd%C3%A9veloppementweb
+    } else if (productArray.some(products => products.id === id && products.color === color)) {
+
         // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+        // crée un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur chaque élément du tableau appelant.
         productArray = productArray.map(products => {
             // la condition pour la quantity ne va pas 
-            if (products.id === id && products.color === color && products.quantity < 100 ) {
+            if (products.id === id && products.color === color && products.quantity + quantity <= 100) {
                 // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Addition_assignment
-                products.quantity += +quantity;
+                products.quantity += quantity;
+                message = 'Ajouté aux produits déjà existants';
+                styleColor = "green";
+            } else {
+                message = 'Vous ne pouvez pas mettre plus de 100 produits';
             }
             return products;
         });
@@ -108,11 +107,20 @@ const pushCart = (productArray, id, color, quantity) => {
             color: color,
             quantity: +quantity,
         };
+        message = 'Ajout nouveau produit';
+        styleColor = "green";
         productArray.push(addDataToArray);
     }
-        // https://developer.mozilla.org/fr/docs/Web/API/Storage/setItem
-        // https://www.youtube.com/watch?v=AUOzvFzdIk4&ab_channel=dcode
+
+    //Affichage message
+    let error = document.createElement('p');
+    error.innerHTML = message;
+    document.querySelector(".item__content").appendChild(error).style.color = styleColor;
+
+    // https://developer.mozilla.org/fr/docs/Web/API/Storage/setItem
+    // https://www.youtube.com/watch?v=AUOzvFzdIk4&ab_channel=dcode
+    // les ajoute à l'emplacement de stockage, sinon elle met à jour la valeur si la clé existe déjà.
+    // convertit une valeur JavaScript en chaîne JSON, en remplaçant éventuellement les valeurs
     localStorage.setItem("product", JSON.stringify(productArray));
 }
 
-//FAIRE LE MESSAGE DERREUR PAR RAPPORT AU 100MAX 
