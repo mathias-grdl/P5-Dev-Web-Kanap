@@ -80,9 +80,9 @@ const pushCart = (productArray, id, color, quantity) => {
     } else if (quantity > 100) {
         message = 'Vous ne pouvez pas mettre plus de 100 produits';
 
-    // produit existe déjà
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/some
-    // https://www.youtube.com/watch?v=4sgugU_QV54&ab_channel=FloDev-Tutorielsd%C3%A9veloppementweb
+        // produit existe déjà
+        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+        // https://www.youtube.com/watch?v=4sgugU_QV54&ab_channel=FloDev-Tutorielsd%C3%A9veloppementweb
     } else if (productArray.some(products => products.id === id && products.color === color)) {
 
         // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/map
@@ -116,6 +116,17 @@ const pushCart = (productArray, id, color, quantity) => {
     let error = document.createElement('p');
     error.innerHTML = message;
     document.querySelector(".item__content").appendChild(error).style.color = styleColor;
+
+
+    // let button = document.getElementById("addToCart");
+    // button.addEventListener("click", function () {
+    //     error.classList.toggle("active");
+    //     window.location.reload();
+    // });
+    // error.addEventListener("click", function () {
+    //     error.classList.toggle("active");
+    // });
+
 
     // https://developer.mozilla.org/fr/docs/Web/API/Storage/setItem
     // https://www.youtube.com/watch?v=AUOzvFzdIk4&ab_channel=dcode
