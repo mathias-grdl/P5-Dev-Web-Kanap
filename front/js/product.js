@@ -8,7 +8,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
     })
 
 const displayProduct = (product) => {
-    const { colors, name, price, imageUrl, description, altTxt } = product; // const colors = sofa.colors; || const name = sofa.name; || ...
+    const { colors, name, price, imageUrl, description, altTxt } = product; // const colors = product.colors; || const name = product.name; || ...
 
     document.title = name;
     productImg(imageUrl, altTxt);
@@ -49,9 +49,6 @@ function addCartButtonListener(product) {
         addCart(product);
     })
 }
-
-// __________ PARTIE 2 __________ 
-
 
 const addCart = (product) => {
     // https://www.youtube.com/watch?v=h34Dbdl9twc&ab_channel=DevTheory
@@ -134,4 +131,7 @@ const pushCart = (productArray, id, color, quantity) => {
     // convertit une valeur JavaScript en chaîne JSON, en remplaçant éventuellement les valeurs
     localStorage.setItem("product", JSON.stringify(productArray));
 }
+
+
+
 
