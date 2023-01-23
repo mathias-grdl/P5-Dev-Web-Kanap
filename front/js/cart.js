@@ -45,27 +45,25 @@ function general(product) {
                 const showAllProducts = parser.parseFromString(cartProducts, "text/html");
                 //On affiche les différents éléments sur la page
                 cart__items.appendChild(showAllProducts.body.firstChild);
-                // deleteProduct(productId, productColor, productQuantity);
             }
         });
     };
 }
 
-//supprimer un produit
-function deleteProduct(productId, productColor, productQuantity) {
-    for (i = 0; i < existingCart.length; i++) {
-
-        if ((productId === existingCart[i].id) && (productColor === existingCart[i].color)) {
-            // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-            existingCart.splice(i, 1);
-            localStorage.setItem("product", JSON.stringify(existingCart));
-            if (productQuantity == 1) {
-                alert("Un article supprimé")
-            } else {
-                alert("Des articles supprimés")
-            };
-            location.reload();
+    // supprimer un produit
+    function deleteProduct(id, color, quantity) {
+        for (i = 0; i < existingCart.length; i++) {
+            if ((id === existingCart[i].id) && (color === existingCart[i].color)) {
+                // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+                existingCart.splice(i, 1);
+                localStorage.setItem("product", JSON.stringify(existingCart));
+                if (quantity == 1) {
+                    alert("Un article supprimé")
+                } else {
+                    alert("Des articles supprimés")
+                };
+                location.reload();
+            }
         }
     }
-}
 
