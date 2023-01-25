@@ -9,64 +9,65 @@ if (localStorage.length === 0 || productArray.length === 0) {
         .then(product => {
             // console.table(product);
             // CreateHTML(product);
-            displayProduct();
+            displayProduct(product);
         })
     }
 
 
-  function displayProduct(){
+
+  function displayProduct(product){
     for (let i=0; i < productArray.length; i++) {
 
-        // Création de la balise "article" et insertion dans la section
+        // Création "article" et insertion dans la section
         let productArticle = document.createElement("article");
         document.querySelector("#cart__items").appendChild(productArticle);
         productArticle.className = "cart__item";
         productArticle.setAttribute("data-id", productArray[i].id);
+        productArticle.setAttribute("data-color", productArray[i].color);
 
-        // Insertion de l'élément "div" pour l'image produit
+        //élément "div" pour l'image
         let productDivImg = document.createElement("div");
         productArticle.appendChild(productDivImg);
         productDivImg.className = "cart__item__img";
 
-        // Insertion de l'image
+        //Image
         let productImg = document.createElement("img");
         productDivImg.appendChild(productImg);
-        productImg.src = productArray[i].imageUrl;
-        // productImg.alt = productArray.altTxt;
+        productImg.src = product[i].imageUrl;
+        productImg.alt = product[i].altTxt;
         
-        // Insertion de l'élément "div" pour la description produit
+        //élément "div" 
         let productItemContent = document.createElement("div");
         productArticle.appendChild(productItemContent);
         productItemContent.className = "cart__item__content";
 
-        // Insertion de l'élément "div"
+        //élément "div"
         let productItemContentTitlePrice = document.createElement("div");
         productItemContent.appendChild(productItemContentTitlePrice);
         productItemContentTitlePrice.className = "cart__item__content__titlePrice";
         
-        // Insertion du titre h2
+        //titre h2
         let productTitle = document.createElement("h2");
         productItemContentTitlePrice.appendChild(productTitle);
-        productTitle.innerHTML = productArray[i].name;
+        productTitle.innerHTML = product[i].name;
 
-        // Insertion de la couleur
+        //couleur
         let productColor = document.createElement("p");
         productTitle.appendChild(productColor);
         productColor.innerHTML = productArray[i].color;
-        productColor.style.fontSize = "20px";
+        // productColor.style.fontSize = "20px";
         
-
-        // Insertion du prix
+        //prix
         let productPrice = document.createElement("p");
         productItemContentTitlePrice.appendChild(productPrice);
-        productPrice.innerHTML = productArray[i].price + " €";
+        productPrice.innerHTML = product[i].price + " €";
  
-        // Insertion de l'élément "div"
+        //élément "div"
         let productItemContentSettings = document.createElement("div");
         productItemContent.appendChild(productItemContentSettings);
         productItemContentSettings.className = "cart__item__content__settings";
  
-        // Insertion de l'élément "div"
+        //élément "div"
         let productItemContentSettingsQuantity = document.createElement("div");
         productItemContentSettings.appendChild(productItemContentSettingsQuantity);
         productItemContentSettingsQuantity.className = "cart__item__content__settings__quantity";
@@ -79,14 +80,15 @@ if (localStorage.length === 0 || productArray.length === 0) {
         // Insertion de la quantité
         let productQuantity = document.createElement("input");
         productItemContentSettingsQuantity.appendChild(productQuantity);
-        productQuantity.value = productArray[i].quantity;
-        productQuantity.className = "itemQuantity";
         productQuantity.setAttribute("type", "number");
+        productQuantity.className = "itemQuantity";
+        productQuantity.setAttribute("name", "itemQuantity");
         productQuantity.setAttribute("min", "1");
         productQuantity.setAttribute("max", "100");
-        productQuantity.setAttribute("name", "itemQuantity");
+        productQuantity.value = productArray[i].quantity;
+   
         
-        // Insertion de l'élément "div"
+        // Insertion de l'élément "div" delete
         let productItemContentSettingsDelete = document.createElement("div");
         productItemContentSettings.appendChild(productItemContentSettingsDelete);
         productItemContentSettingsDelete.className = "cart__item__content__settings__delete";
