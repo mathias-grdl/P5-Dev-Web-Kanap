@@ -1,10 +1,19 @@
 const url_parameters = new URLSearchParams(window.location.search);
 const productId = url_parameters.get("id");
 
+//Création de l'élément message (erreur/succès)
+function productMessage() {
+    let productElement = document.createElement('p')
+    productElement.setAttribute("id" , "message");
+    document.querySelector(".item__content").appendChild(productElement);
+}
+
 fetch(`http://localhost:3000/api/products/${productId}`)
     .then(response => response.json())
     .then(product => {
+        productMessage();
         displayProduct(product);
+        // console.log(product);
     })
 
 const displayProduct = (product) => {
@@ -110,20 +119,9 @@ const pushCart = (productArray, id, color, quantity) => {
     }
 
     //Affichage message
-    let error = document.createElement('p');
-    error.innerHTML = message;
-    document.querySelector(".item__content").appendChild(error).style.color = styleColor;
-
-
-    // let button = document.getElementById("addToCart");
-    // button.addEventListener("click", function () {
-    //     error.classList.toggle("active");
-    //     window.location.reload();
-    // });
-    // error.addEventListener("click", function () {
-    //     error.classList.toggle("active");
-    // });
-
+    let messageElement = document.querySelector("#message");
+    messageElement.innerHTML = message;
+    messageElement.style.color = styleColor;
 
     // https://developer.mozilla.org/fr/docs/Web/API/Storage/setItem
     // https://www.youtube.com/watch?v=AUOzvFzdIk4&ab_channel=dcode
