@@ -23,6 +23,7 @@ function affichage(products) {
     }
 }
 
+// affichage des produits
 function displayProduct(product, productIndex, i) {
 
     //élément "article" et insertion dans la section
@@ -112,7 +113,7 @@ function displayProduct(product, productIndex, i) {
     })
 }
 
-
+// supprimer un produit
 function deleteProduct(id, color) {
     // Trouver l'index de l'article du panier dans productArray pour le supprimer.
     // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
@@ -127,7 +128,7 @@ function deleteProduct(id, color) {
     }
 };
 
-
+// changer la quantité d'un produit
 function updateQuantityProduct(id, color) {
     let getInput = document.getElementById(id + color);
     let inputValue = getInput.value;
@@ -156,7 +157,7 @@ function updateQuantityProduct(id, color) {
 //     }
 
 
-
+// affichage prix + quantité
 function total(products) {
     // La méthode reduce() applique une fonction qui est un « accumulateur » et qui traite chaque valeur d'une liste (de la gauche vers la droite) afin de la réduire à une seule valeur.
     // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
@@ -178,19 +179,88 @@ function total(products) {
 
 // ========================================================================================
 
-// récup form 
+// form 
 let form = document.querySelector(".cart__order__form");
 
 // variables
-let prenom = document.querySelector("#firstName");
-let nom = document.querySelector("#lastName");
-let adresse = document.querySelector("#address");
-let ville = document.querySelector("#city");
+let firstName = document.querySelector("#firstName");
+let lastName = document.querySelector("#lastName");
+let address = document.querySelector("#address");
+let city = document.querySelector("#city");
 let email = document.querySelector("#email");
 
-//<p> d'erreur 
-let prenom_erreur = document.querySelector("#firstNameErrorMsg");
-let nom_erreur = document.querySelector("#lastNameErrorMsg");
-let adresse_erreur = document.querySelector("#addressErrorMsg");
-let ville_erreur = document.querySelector("#cityErrorMsg");
-let email_erreur = document.querySelector("#emailErrorMsg");
+let firstNameErreur = document.querySelector("#firstNameErrorMsg");
+let lastNameErreur = document.querySelector("#lastNameErrorMsg");
+let addressErreur = document.querySelector("#addressErrorMsg");
+let cityErreur = document.querySelector("#cityErrorMsg");
+let emailErreur = document.querySelector("#emailErrorMsg");
+
+// valider le formulaire
+form.addEventListener("submit", (e)=> {
+    
+    e.preventDefault();
+    // Les données récupéré du formulaire
+    let contact = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value
+    }
+    
+    // fonctions qui vérifient les données du formulaire grâce aux Regex
+    function firstNameControl(){
+        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
+        // https://www.web-development-kb-eu.site/fr/regex/expression-reguliere-pour-le-firstName-et-le-lastName/968019401/
+        return /^[a-z ,.'-]+$/i.test(firstName.value);
+    }
+
+    function lastNameControl(){
+        return /^[a-z ,.'-]+$/i.test(lastName.value);
+    }
+
+    function addressControl(){
+        return /^[a-zA-Z0-9\s,.'-]{3,}$/.test(address.value);
+    }
+
+    function cityControl(){
+        return /^[a-z ,.'-]+$/i.test(city.value);
+    }
+
+    function emailControl(){
+        return /^[\w\-\+]+(\.[\w\-]+)*@[\w\-]+(\.[\w\-]+)*\.[\w\-]{2,4}$/.test(email.value);
+    }
+
+    firstNameErreur.innerText = firstNameControl() ? "" : "Prénom non valide";
+    lastNameErreur.innerText = lastNameControl() ? "" : "Nom non valide";
+    addressErreur.innerText = addressControl() ? "" : "Adresse non valide";
+    cityErreur.innerText = cityControl() ? "" : "Ville non valide";
+    emailErreur.innerText = emailControl() ? "" : "Email non valide";
+
+    // vérification des champs du form
+    function verif(){
+        if(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl()){
+        localStorage.setItem("form", JSON.stringify(contact));
+        return true;
+        }
+    }
+     
+   //data
+    let allData = {
+        contact
+    }
+
+    //envoie les données à l'API
+    if (verif() === true) {
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(allData)
+    
+        })  
+    }
+})
