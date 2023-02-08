@@ -194,74 +194,110 @@ let addressErreur = document.querySelector("#addressErrorMsg");
 let cityErreur = document.querySelector("#cityErrorMsg");
 let emailErreur = document.querySelector("#emailErrorMsg");
 
-firstName.addEventListener("blur", (e) => {
+// RegExp
+// https://blog.netwrix.fr/2019/10/31/expressions-regulieres-pour-debutants-comment-se-lancer-dans-la-decouverte-de-donnees-sensibles/
+let RegexpName = new RegExp("^[a-zA-Z\'\-]+$");
+let RegexpAddress = new RegExp("[a-zA-Z0-9\s,.'-]{3,}$");
+let RegexpEmail = new RegExp("[a-zA-Z0-9-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+");
+
+// Gestion d'erreur firstName
+firstName.addEventListener("blur", () => {
     firstNameControl();
 });
 
-
-    // fonctions qui vérifient les données du formulaire grâce aux Regex
-    function firstNameControl() {
-        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
-        // https://www.web-development-kb-eu.site/fr/regex/expression-reguliere-pour-le-firstName-et-le-lastName/968019401/
-        let RegexpFirstName = new RegExp("^[a-zA-Z\'\-]+$");
-        console.log(firstName.value);
-        console.log(RegexpFirstName.test(firstName.value));
-        if (RegexpFirstName.test(firstName.value)){
-            firstNameErreur.innerText = "Prénom valide";
-            console.log("true");
-            return true;
-        }
-        firstNameErreur.innerText = "Prénom non valide";
-        console.log("false");
-        return false;
+function firstNameControl() {
+    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
+    // https://www.web-development-kb-eu.site/fr/regex/expression-reguliere-pour-le-firstName-et-le-lastName/968019401/
+    // console.log(firstName.value);
+    // console.log(RegexpFirstName.test(firstName.value));
+    if (RegexpName.test(firstName.value)) {
+        firstNameErreur.innerText = "Prénom valide";
+        console.log("prénom true");
+        return true;
     }
+    firstNameErreur.innerText = "Prénom non valide";
+    console.log("prénom false");
+    return false;
+}
 
 
+// Gestion d'erreur LastName
+lastName.addEventListener("blur", () => {
+    lastNameControl();
+});
+
+function lastNameControl() {
+    if (RegexpName.test(lastName.value)) {
+        lastNameErreur.innerText = "Nom valide";
+        console.log("Nom true");
+        return true;
+    }
+    lastNameErreur.innerText = "Nom non valide";
+    console.log("Nom false");
+    return false;
+}
+
+
+// Gestion d'erreur Address
+address.addEventListener("blur", () => {
+    addressControl();
+});
+
+function addressControl() {
+    if (RegexpAddress.test(address.value)) {
+        addressErreur.innerText = "Adresse valide";
+        console.log("Adresse true");
+        return true;
+    }
+    addressErreur.innerText = "Adresse non valide";
+    console.log("Nom Adresse false");
+    return false;
+}
+
+
+// Gestion d'erreur city
+city.addEventListener("blur", () => {
+    cityControl();
+});
+
+function cityControl() {
+    if (RegexpName.test(city.value)) {
+        cityErreur.innerText = "Ville valide";
+        console.log("Ville true");
+        return true;
+    }
+    cityErreur.innerText = "Ville non valide";
+    console.log("Ville false");
+    return false;
+}
+
+// Gestion d'erreur Email
+email.addEventListener("blur", () => {
+    emailControl();
+});
+
+function emailControl() {
+    if (RegexpEmail.test(email.value)) {
+        emailErreur.innerText = "Email valide";
+        console.log("Email true");
+        return true;
+    }
+    emailErreur.innerText = "Email non valide";
+    console.log("Email false");
+    return false;
+}
+
+// vérification des champs du form
+function verif() {
+    console.log(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl());
+    console.log("function verif ok")
+    // retourne bien true ou false
+    return (firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl());
+}
 
 // valider le formulaire
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    // // fonctions qui vérifient les données du formulaire grâce aux Regex
-    // function firstNameControl() {
-    //     // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
-    //     // https://www.web-development-kb-eu.site/fr/regex/expression-reguliere-pour-le-firstName-et-le-lastName/968019401/
-    //     let RegexpFirstName = new RegExp("/^[a-z ,.'-]+$/i");
-    //     return RegexpFirstName.test(firstName.value);
-    // }
-
-    function lastNameControl() {
-        return /^[a-z ,.'-]+$/i.test(lastName.value);
-    }
-
-    function addressControl() {
-        return /^[a-zA-Z0-9\s,.'-]{3,}$/.test(address.value);
-    }
-
-    function cityControl() {
-        return /^[a-z ,.'-]+$/i.test(city.value);
-    }
-
-    function emailControl() {
-        return /^[\w\-\+]+(\.[\w\-]+)*@[\w\-]+(\.[\w\-]+)*\.[\w\-]{2,4}$/.test(email.value);
-    }
-
-    // vérification des champs du form
-    function verif() {
-        return (firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl());
-        // if (firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl()) {
-        // localStorage.setItem("form", JSON.stringify(contact));
-        // return true;
-        // }
-        // return false;
-    }
-
-    // firstNameErreur.innerText = firstNameControl() ? "" : "Prénom non valide";
-    lastNameErreur.innerText = lastNameControl() ? "" : "Nom non valide";
-    addressErreur.innerText = addressControl() ? "" : "Adresse non valide";
-    cityErreur.innerText = cityControl() ? "" : "Ville non valide";
-    emailErreur.innerText = emailControl() ? "" : "Email non valide";
-
     //envoie les données à l'API
     if (verif()) {
         //produit
@@ -269,6 +305,10 @@ form.addEventListener("submit", (e) => {
         productArray.forEach(product => {
             products.push(product.id);
         });
+        console.log("products");
+        console.log(products);
+        
+        // ok
 
         // Les données récupéré du formulaire
         let contact = {
@@ -278,6 +318,10 @@ form.addEventListener("submit", (e) => {
             city: city.value,
             email: email.value
         }
+        console.log("contact");
+        console.log(contact);
+        // ok
+
 
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
@@ -287,7 +331,12 @@ form.addEventListener("submit", (e) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ contact, products })
-
         })
+        console.log(JSON.stringify({ contact, products }));
+        // PB accolade ?
     }
-})
+});
+
+
+
+
