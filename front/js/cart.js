@@ -1,4 +1,5 @@
 let productArray = JSON.parse(localStorage.getItem("product"));
+let ProductsCart;
 
 if (localStorage.length === 0 || productArray.length === 0) {
     document.querySelector('#cart__items').innerHTML = "Votre panier est vide";
@@ -6,8 +7,8 @@ if (localStorage.length === 0 || productArray.length === 0) {
     fetch("http://localhost:3000/api/products")
         .then(response => response.json())
         .then(products => {
+            ProductsCart = products;
             affichage(products);
-            total(products);
         })
 }
 console.log("calcul total");
@@ -21,6 +22,7 @@ function affichage(products) {
         let productIndex = products.findIndex(product => product._id == productArray[i].id)
         // console.log(productIndex);
         displayProduct(products, productIndex, i);
+        total(products);
     }
 }
 
@@ -95,7 +97,7 @@ function displayProduct(product, productIndex, i) {
     productQuantity.setAttribute("max", 100);
     productQuantity.value = productArray[i].quantity;
     productQuantity.setAttribute("id", productArray[i].id + productArray[i].color)
-    productQuantity.addEventListener("blur", function () {
+    productQuantity.addEventListener("change", function () {
         updateQuantityProduct(productArray[i].id, productArray[i].color)
     })
 
@@ -132,6 +134,7 @@ function deleteProduct(id, color) {
 // changer la quantité d'un produit
 function updateQuantityProduct(id, color) {
     let getInput = document.getElementById(id + color);
+
     let inputValue = getInput.value;
     for (i = 0; i < productArray.length; i++) {
         if ((id === productArray[i].id) && (color === productArray[i].color)) {
@@ -143,20 +146,9 @@ function updateQuantityProduct(id, color) {
             localStorage.setItem("product", JSON.stringify(productArray));
         }
     }
-    console.log("calcul total");
     //appel function affichage prix quantité
-    // total(products)
+    total(ProductsCart);
 };
-
-
-// function total(){
-//         let totalQuantity = 0
-//         for (let i = 0; i < productArray.length; i++) {
-//             totalQuantity += productArray[i].quantity;
-//         }
-//         document.getElementById("totalQuantity").innerText = totalQuantity;
-//     }
-
 
 // affichage prix + quantité
 function total(products) {
@@ -165,7 +157,6 @@ function total(products) {
     totalQuantity = productArray.reduce(function (previousValue, currentValue) {
         return previousValue + currentValue.quantity;
     }, 0);
-
     totalPrice = productArray.reduce(function (previousValue, currentValue) {
         // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/find
         let product = products.find(i => i._id === currentValue.id);
@@ -237,7 +228,6 @@ function lastNameControl() {
     return false;
 }
 
-
 // Gestion d'erreur Address
 address.addEventListener("blur", () => {
     addressControl();
@@ -253,7 +243,6 @@ function addressControl() {
     console.log("Nom Adresse false");
     return false;
 }
-
 
 // Gestion d'erreur city
 city.addEventListener("blur", () => {
@@ -289,6 +278,7 @@ function emailControl() {
 
 // vérification des champs du form
 function verif() {
+    console.log("===================================");
     console.log(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl());
     console.log("function verif ok")
     // retourne bien true ou false
@@ -307,7 +297,6 @@ form.addEventListener("submit", (e) => {
         });
         console.log("products");
         console.log(products);
-        
         // ok
 
         // Les données récupéré du formulaire
@@ -323,6 +312,7 @@ form.addEventListener("submit", (e) => {
         // ok
 
 
+        // https://www.youtube.com/watch?v=fQZTCzAR9GQ&ab_channel=e-genieclimatique
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
@@ -332,8 +322,12 @@ form.addEventListener("submit", (e) => {
             },
             body: JSON.stringify({ contact, products })
         })
-        console.log(JSON.stringify({ contact, products }));
-        // PB accolade ?
+            .then(response => response.json())
+            .then(res => {
+                console.log(res);
+                // redirige vers la page de confirmation (+ orderId dans l'URL)
+                window.location.href=`confirmation.html?id=${res.orderId}`
+            })
     }
 });
 
