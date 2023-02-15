@@ -16,11 +16,7 @@ console.log("calcul total");
 // Affichage des produits
 function affichage(products) {
     for (let i = 0; i < productArray.length; i++) {
-        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-        // renvoie l'index du premier élément du tableau qui satisfait une condition donnée par une fonction. 
-        // Si la fonction renvoie faux pour tous les éléments du tableau, le résultat vaut -1.
         let productIndex = products.findIndex(product => product._id == productArray[i].id)
-        // console.log(productIndex);
         displayProduct(products, productIndex, i);
         total(products);
     }
@@ -118,13 +114,8 @@ function displayProduct(product, productIndex, i) {
 
 // supprimer un produit
 function deleteProduct(id, color) {
-    // Trouver l'index de l'article du panier dans productArray pour le supprimer.
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
     let i = productArray.findIndex(product => product.id == id && product.color == color)
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Inequality
     if (i != -1) {
-        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-        // let tabElementsSupprimes = array.splice(début, nbASupprimer[, élem1[, élem2[, ...]]])
         productArray.splice(i, 1);
         localStorage.setItem("product", JSON.stringify(productArray));
         location.reload();
@@ -152,22 +143,16 @@ function updateQuantityProduct(id, color) {
 
 // affichage prix + quantité
 function total(products) {
-    // La méthode reduce() applique une fonction qui est un « accumulateur » et qui traite chaque valeur d'une liste (de la gauche vers la droite) afin de la réduire à une seule valeur.
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
     totalQuantity = productArray.reduce(function (previousValue, currentValue) {
         return previousValue + currentValue.quantity;
     }, 0);
     totalPrice = productArray.reduce(function (previousValue, currentValue) {
-        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/find
         let product = products.find(i => i._id === currentValue.id);
         return previousValue + (currentValue.quantity * product.price);
     }, 0);
     document.getElementById('totalQuantity').innerHTML = totalQuantity;
     document.getElementById('totalPrice').innerHTML = totalPrice;
 }
-
-
-// ========================================================================================
 
 // form 
 let form = document.querySelector(".cart__order__form");
@@ -179,14 +164,7 @@ let address = document.querySelector("#address");
 let city = document.querySelector("#city");
 let email = document.querySelector("#email");
 
-let firstNameErreur = document.querySelector("#firstNameErrorMsg");
-let lastNameErreur = document.querySelector("#lastNameErrorMsg");
-let addressErreur = document.querySelector("#addressErrorMsg");
-let cityErreur = document.querySelector("#cityErrorMsg");
-let emailErreur = document.querySelector("#emailErrorMsg");
-
 // RegExp
-// https://blog.netwrix.fr/2019/10/31/expressions-regulieres-pour-debutants-comment-se-lancer-dans-la-decouverte-de-donnees-sensibles/
 let RegexpName = new RegExp("^[a-zA-Z\'\-]+$");
 let RegexpAddress = new RegExp("[a-zA-Z0-9\s,.'-]{3,}$");
 let RegexpEmail = new RegExp("[a-zA-Z0-9-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+");
@@ -197,20 +175,14 @@ firstName.addEventListener("blur", () => {
 });
 
 function firstNameControl() {
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
-    // https://www.web-development-kb-eu.site/fr/regex/expression-reguliere-pour-le-firstName-et-le-lastName/968019401/
-    // console.log(firstName.value);
-    // console.log(RegexpFirstName.test(firstName.value));
+    let firstNameMsg = document.querySelector("#firstNameErrorMsg");
     if (RegexpName.test(firstName.value)) {
-        firstNameErreur.innerText = "Prénom valide";
-        console.log("prénom true");
+        firstNameMsg.innerText = "Prénom valide";
         return true;
     }
-    firstNameErreur.innerText = "Prénom non valide";
-    console.log("prénom false");
+    firstNameMsg.innerText = "Prénom non valide";
     return false;
 }
-
 
 // Gestion d'erreur LastName
 lastName.addEventListener("blur", () => {
@@ -218,13 +190,12 @@ lastName.addEventListener("blur", () => {
 });
 
 function lastNameControl() {
+    let lastNameMsg = document.querySelector("#lastNameErrorMsg");
     if (RegexpName.test(lastName.value)) {
-        lastNameErreur.innerText = "Nom valide";
-        console.log("Nom true");
+        lastNameMsg.innerText = "Nom valide";
         return true;
     }
-    lastNameErreur.innerText = "Nom non valide";
-    console.log("Nom false");
+    lastNameMsg.innerText = "Nom non valide";
     return false;
 }
 
@@ -234,13 +205,12 @@ address.addEventListener("blur", () => {
 });
 
 function addressControl() {
+    let addressMsg = document.querySelector("#addressErrorMsg");
     if (RegexpAddress.test(address.value)) {
-        addressErreur.innerText = "Adresse valide";
-        console.log("Adresse true");
+        addressMsg.innerText = "Adresse valide";
         return true;
     }
-    addressErreur.innerText = "Adresse non valide";
-    console.log("Nom Adresse false");
+    addressMsg.innerText = "Adresse non valide";
     return false;
 }
 
@@ -250,13 +220,12 @@ city.addEventListener("blur", () => {
 });
 
 function cityControl() {
+    let cityMsg = document.querySelector("#cityErrorMsg");
     if (RegexpName.test(city.value)) {
-        cityErreur.innerText = "Ville valide";
-        console.log("Ville true");
+        cityMsg.innerText = "Ville valide";
         return true;
     }
-    cityErreur.innerText = "Ville non valide";
-    console.log("Ville false");
+    cityMsg.innerText = "Ville non valide";
     return false;
 }
 
@@ -266,21 +235,17 @@ email.addEventListener("blur", () => {
 });
 
 function emailControl() {
+    let emailMsg = document.querySelector("#emailErrorMsg");
     if (RegexpEmail.test(email.value)) {
-        emailErreur.innerText = "Email valide";
-        console.log("Email true");
+        emailMsg.innerText = "Email valide";
         return true;
     }
-    emailErreur.innerText = "Email non valide";
-    console.log("Email false");
+    emailMsg.innerText = "Email non valide";
     return false;
 }
 
 // vérification des champs du form
 function verif() {
-    console.log("===================================");
-    console.log(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl());
-    console.log("function verif ok")
     // retourne bien true ou false
     return (firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl());
 }
@@ -295,9 +260,6 @@ form.addEventListener("submit", (e) => {
         productArray.forEach(product => {
             products.push(product.id);
         });
-        console.log("products");
-        console.log(products);
-        // ok
 
         // Les données récupéré du formulaire
         let contact = {
@@ -307,15 +269,10 @@ form.addEventListener("submit", (e) => {
             city: city.value,
             email: email.value
         }
-        console.log("contact");
-        console.log(contact);
-        // ok
 
 
-        // https://www.youtube.com/watch?v=fQZTCzAR9GQ&ab_channel=e-genieclimatique
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
-            // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -326,7 +283,7 @@ form.addEventListener("submit", (e) => {
             .then(res => {
                 console.log(res);
                 // redirige vers la page de confirmation (+ orderId dans l'URL)
-                window.location.href=`confirmation.html?id=${res.orderId}`
+                window.location.href = `confirmation.html?id=${res.orderId}`
             })
     }
 });
