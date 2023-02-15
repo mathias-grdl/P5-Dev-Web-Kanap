@@ -1,11 +1,11 @@
-// https://openclassrooms.com/fr/courses/5543061-ecrivez-du-javascript-pour-le-web/5577591-recuperez-des-donnees-dun-service-web
-// https://www.youtube.com/watch?v=b0dPBK37-M8&t=790s
-
 fetch("http://localhost:3000/api/products")
     .then(response => response.json())
     .then(products => {
         createProducts(products);
     })
+    .catch(() => {
+        console.log("error");
+      });
 
 //Création des produits
 function createProducts(products) {

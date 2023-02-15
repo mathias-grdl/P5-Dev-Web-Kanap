@@ -14,6 +14,9 @@ fetch(`http://localhost:3000/api/products/${productId}`)
         productMessage();
         displayProduct(product);
     })
+    .catch(() => {
+        console.log("error");
+      });
 
 // Affichage des produits
 const displayProduct = (product) => {
@@ -83,7 +86,8 @@ const pushCart = (productArray, id, color, quantity) => {
         message = 'Vous devez choisir une quantité';
     } else if (quantity > 100) {
         message = 'Vous ne pouvez pas mettre plus de 100 produits';
-
+    } else if (quantity < 0) {
+        message = 'Vous ne pouvez pas mettre moins de 1 produit';
         // produit existe déjà
     } else if (productArray.some(products => products.id === id && products.color === color)) {
 

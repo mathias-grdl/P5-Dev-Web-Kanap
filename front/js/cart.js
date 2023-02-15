@@ -10,6 +10,9 @@ if (localStorage.length === 0 || productArray.length === 0) {
             ProductsCart = products;
             affichage(products);
         })
+        .catch(() => {
+            console.log("error");
+          });
 }
 console.log("calcul total");
 
@@ -285,6 +288,9 @@ form.addEventListener("submit", (e) => {
                 // redirige vers la page de confirmation (+ orderId dans l'URL)
                 window.location.href = `confirmation.html?id=${res.orderId}`
             })
+            .catch(() => {
+                console.log("error");
+              });
     }
 });
 
