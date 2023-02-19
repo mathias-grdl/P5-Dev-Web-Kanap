@@ -1,11 +1,15 @@
+// Envoie une requête à l'URL "http://localhost:3000/api/products" pour récupérer des données.
 fetch("http://localhost:3000/api/products")
+    // Traite la réponse de la requête en tant que JSON et renvoie une promesse.
     .then(response => response.json())
+    // Traite les données JSON résolues en tant que "products" et appelle ensuite la fonction "createProducts" avec les données récupérées.
     .then(products => {
         createProducts(products);
     })
+    // Gère toute erreur survenue lors de la récupération des données.
     .catch(() => {
         console.log("error");
-      });
+    });
 
 //Création des produits
 function createProducts(products) {

@@ -1,3 +1,4 @@
+// Récupération de l'id du produit dans l'URL
 const url_parameters = new URLSearchParams(window.location.search);
 const productId = url_parameters.get("id");
 
@@ -8,6 +9,7 @@ function productMessage() {
     document.querySelector(".item__content").appendChild(productElement);
 }
 
+// Appel à l'API pour récupérer les données d'un produit avec l'ID récupéré dans l'URL
 fetch(`http://localhost:3000/api/products/${productId}`)
     .then(response => response.json())
     .then(product => {
@@ -16,7 +18,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
     })
     .catch(() => {
         console.log("error");
-      });
+    });
 
 // Affichage des produits
 const displayProduct = (product) => {
@@ -63,10 +65,11 @@ function addCartButtonListener(product) {
 }
 
 const addCart = (product) => {
+    // récupèrer la valeur de l'élément dans le stockage local sous la clé "product" et la chaîne de caractères en objet JavaScript.
     let productArray = JSON.parse(localStorage.getItem("product"));
     let color = document.getElementById("colors").value;
     let quantity = document.getElementById("quantity").value;
-    //opérateur ternaire
+    //opérateur ternaire : Si le panier est vide, initialisation d'un tableau vide pour productArray
     productArray = productArray === null ? [] : productArray;
     pushCart(productArray, product._id, color, quantity);
 }
@@ -75,6 +78,7 @@ const addCart = (product) => {
 const pushCart = (productArray, id, color, quantity) => {
     let styleColor = "red";
     let message = "";
+    // Convertit la quantité en entier
     quantity = parseInt(quantity);
 
     // On vérifie que tout les champs soient remplient
@@ -111,6 +115,7 @@ const pushCart = (productArray, id, color, quantity) => {
         };
         message = 'Ajout nouveau produit';
         styleColor = "green";
+        // push : ajoute un ou plusieurs éléments à la fin d'un tableau et retourne la nouvelle taille du tableau
         productArray.push(addDataToArray);
     }
 
@@ -119,9 +124,6 @@ const pushCart = (productArray, id, color, quantity) => {
     messageElement.innerHTML = message;
     messageElement.style.color = styleColor;
 
+    // Stockage des produits dans le localStorage en convertisant une valeur JavaScript en chaîne JSON
     localStorage.setItem("product", JSON.stringify(productArray));
 }
-
-
-
-

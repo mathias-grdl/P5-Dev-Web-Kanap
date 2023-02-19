@@ -1,3 +1,4 @@
+// Récupération des données de la clé "product" dans le local storage et transformation en tableau d'objets
 let productArray = JSON.parse(localStorage.getItem("product"));
 let ProductsCart;
 
@@ -12,9 +13,8 @@ if (localStorage.length === 0 || productArray.length === 0) {
         })
         .catch(() => {
             console.log("error");
-          });
+        });
 }
-console.log("calcul total");
 
 // Affichage des produits
 function affichage(products) {
@@ -26,7 +26,7 @@ function affichage(products) {
 }
 
 // construction html des produits
-function displayProduct(product, productIndex, i) {
+function displayProduct(products, productIndex, i) {
 
     //élément "article" et insertion dans la section
     let productArticle = document.createElement("article");
@@ -43,8 +43,8 @@ function displayProduct(product, productIndex, i) {
     //élément Image
     let productImg = document.createElement("img");
     productDivImg.appendChild(productImg);
-    productImg.src = product[productIndex].imageUrl;
-    productImg.alt = product[productIndex].altTxt;
+    productImg.src = products[productIndex].imageUrl;
+    productImg.alt = products[productIndex].altTxt;
 
     //élément "div" 
     let productContent = document.createElement("div");
@@ -59,7 +59,7 @@ function displayProduct(product, productIndex, i) {
     //élément titre h2
     let productTitle = document.createElement("h2");
     productContentTitlePrice.appendChild(productTitle);
-    productTitle.innerHTML = product[productIndex].name;
+    productTitle.innerHTML = products[productIndex].name;
 
     //élément couleur
     let productColor = document.createElement("p");
@@ -69,7 +69,7 @@ function displayProduct(product, productIndex, i) {
     //élément prix
     let productPrice = document.createElement("p");
     productContentTitlePrice.appendChild(productPrice);
-    productPrice.innerHTML = product[productIndex].price + " €";
+    productPrice.innerHTML = products[productIndex].price + " €";
 
     //élément "div"
     let productContentSettings = document.createElement("div");
@@ -117,6 +117,7 @@ function displayProduct(product, productIndex, i) {
 
 // supprimer un produit
 function deleteProduct(id, color) {
+    // Recherche de l'index du produit correspondant dans le tableau "productArray" en comparant l'ID et la couleur du produit dans la clé "product"
     let i = productArray.findIndex(product => product.id == id && product.color == color)
     if (i != -1) {
         productArray.splice(i, 1);
@@ -273,7 +274,6 @@ form.addEventListener("submit", (e) => {
             email: email.value
         }
 
-
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             headers: {
@@ -284,16 +284,11 @@ form.addEventListener("submit", (e) => {
         })
             .then(response => response.json())
             .then(res => {
-                console.log(res);
                 // redirige vers la page de confirmation (+ orderId dans l'URL)
                 window.location.href = `confirmation.html?id=${res.orderId}`
             })
             .catch(() => {
                 console.log("error");
-              });
+            });
     }
 });
-
-
-
-
