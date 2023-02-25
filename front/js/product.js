@@ -9,6 +9,12 @@ function productMessage() {
     document.querySelector(".item__content").appendChild(productElement);
 }
 
+function refreshError() {
+setTimeout(() => {
+    location.reload();
+  }, 1500);
+}
+
 // Appel à l'API pour récupérer les données d'un produit avec l'ID récupéré dans l'URL
 fetch(`http://localhost:3000/api/products/${productId}`)
     .then(response => response.json())
@@ -84,14 +90,19 @@ const pushCart = (productArray, id, color, quantity) => {
     // On vérifie que tout les champs soient remplient
     if ((color === null || color === "") && (quantity === null || quantity === "" || quantity === 0)) {
         message = 'Vous devez choisir une couleur et une quantité';
+        refreshError();
     } else if (color === null || color === "") {
         message = 'Vous devez choisir une couleur';
+        refreshError();
     } else if (quantity === null || quantity === "" || quantity === 0) {
         message = 'Vous devez choisir une quantité';
+        refreshError();
     } else if (quantity > 100) {
         message = 'Vous ne pouvez pas mettre plus de 100 produits';
+        refreshError();
     } else if (quantity < 0) {
         message = 'Vous ne pouvez pas mettre moins de 1 produit';
+        refreshError();
         // produit existe déjà
     } else if (productArray.some(products => products.id === id && products.color === color)) {
 

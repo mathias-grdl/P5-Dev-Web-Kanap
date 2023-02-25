@@ -133,8 +133,9 @@ function updateQuantityProduct(id, color) {
     let inputValue = getInput.value;
     for (i = 0; i < productArray.length; i++) {
         if ((id === productArray[i].id) && (color === productArray[i].color)) {
-            if (inputValue > 100 || inputValue == 0) {
-                alert("Saisir une quantité entre 1 et 100")
+            if (inputValue > 100 || inputValue == 0 || inputValue < 0) {
+                alert("Saisir une quantité entre 1 et 100");
+                location.reload();
             } else {
                 productArray[i].quantity = parseInt(inputValue);
             }
@@ -169,9 +170,9 @@ let city = document.querySelector("#city");
 let email = document.querySelector("#email");
 
 // RegExp
-let RegexpName = new RegExp("^[a-zA-Z\'\-]+$");
-let RegexpAddress = new RegExp("[a-zA-Z0-9\s,.'-]{3,}$");
-let RegexpEmail = new RegExp("[a-zA-Z0-9-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+");
+let RegexpName = new RegExp("^[a-zA-Z\-]+$");
+let RegexpAddress = new RegExp("^[\\wÀ-ú'-\\s]{2,}$");
+let RegexpEmail = new RegExp("^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9._-]+[.]{1}[a-z]{2,10}$");
 
 // Gestion d'erreur firstName
 firstName.addEventListener("blur", () => {
@@ -181,7 +182,7 @@ firstName.addEventListener("blur", () => {
 function firstNameControl() {
     let firstNameMsg = document.querySelector("#firstNameErrorMsg");
     if (RegexpName.test(firstName.value)) {
-        firstNameMsg.innerText = "Prénom valide";
+        firstNameMsg.innerText = "";
         return true;
     }
     firstNameMsg.innerText = "Prénom non valide";
@@ -196,7 +197,7 @@ lastName.addEventListener("blur", () => {
 function lastNameControl() {
     let lastNameMsg = document.querySelector("#lastNameErrorMsg");
     if (RegexpName.test(lastName.value)) {
-        lastNameMsg.innerText = "Nom valide";
+        lastNameMsg.innerText = "";
         return true;
     }
     lastNameMsg.innerText = "Nom non valide";
@@ -211,7 +212,7 @@ address.addEventListener("blur", () => {
 function addressControl() {
     let addressMsg = document.querySelector("#addressErrorMsg");
     if (RegexpAddress.test(address.value)) {
-        addressMsg.innerText = "Adresse valide";
+        addressMsg.innerText = "";
         return true;
     }
     addressMsg.innerText = "Adresse non valide";
@@ -226,7 +227,7 @@ city.addEventListener("blur", () => {
 function cityControl() {
     let cityMsg = document.querySelector("#cityErrorMsg");
     if (RegexpName.test(city.value)) {
-        cityMsg.innerText = "Ville valide";
+        cityMsg.innerText = "";
         return true;
     }
     cityMsg.innerText = "Ville non valide";
@@ -241,7 +242,7 @@ email.addEventListener("blur", () => {
 function emailControl() {
     let emailMsg = document.querySelector("#emailErrorMsg");
     if (RegexpEmail.test(email.value)) {
-        emailMsg.innerText = "Email valide";
+        emailMsg.innerText = "";
         return true;
     }
     emailMsg.innerText = "Email non valide";
