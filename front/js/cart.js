@@ -274,7 +274,8 @@ form.addEventListener("submit", (e) => {
             city: city.value,
             email: email.value
         }
-
+        // localStorage.setItem("contact", JSON.stringify(contact));
+        
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             headers: {
